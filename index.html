@@ -10,6 +10,7 @@
     font-family: Arial, sans-serif;
     background: #111;
     color: white;
+    padding-bottom: 40px;
   }
 
   #score {
@@ -17,7 +18,6 @@
     margin: 20px;
   }
 
-  /* 스페이스바 버튼 */
   #space-btn {
     width: 300px;
     height: 80px;
@@ -26,11 +26,14 @@
     border: none;
     cursor: pointer;
     background: #eee;
+    margin-bottom: 20px;
   }
 
-  /* 업그레이드 버튼 */
+  #upgrade-area {
+    margin-top: 10px;
+  }
+
   #mouse-upgrade {
-    margin-top: 20px;
     width: 300px;
     padding: 12px;
     border-radius: 15px;
@@ -39,28 +42,25 @@
     transition: 0.2s;
   }
 
-  .can-buy {
-    background-color: #c9f5c9;
-  }
+  .can-buy { background-color: #c9f5c9; }
+  .cant-buy { background-color: #f5c9c9; }
 
-  .cant-buy {
-    background-color: #f5c9c9;
-  }
-
-  /* 초기화 버튼 */
+  /* 🔥 초기화 버튼 */
   #reset-btn {
-    margin-top: 15px;
+    display: block;
+    margin: 25px auto 0 auto;
     width: 300px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 15px;
     border: none;
     cursor: pointer;
-    background: #ddd;
+    background: #888;
+    color: white;
     font-size: 14px;
   }
 
   #reset-btn:hover {
-    background: #bbb;
+    background: #666;
   }
 </style>
 </head>
@@ -71,17 +71,13 @@
 
 <button id="space-btn" onclick="clickSpace()">SPACE</button>
 
-<!-- 업그레이드 영역 -->
 <div id="upgrade-area">
-
   <button id="mouse-upgrade" onclick="buyMouseUpgrade()">
-    <div style="font-size:18px; font-weight:bold;">
-      일반 마우스
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
+    <div style="font-size:18px;font-weight:bold;">일반 마우스</div>
+    <div style="font-size:12px;margin-top:4px;">
       이걸 사면 수동 클릭이 2배 증가 합니다.
     </div>
-    <div style="font-size:11px; margin-top:6px;">
+    <div style="font-size:11px;margin-top:6px;">
       가격: <span id="mouse-price">150</span>
     </div>
   </button>
@@ -89,13 +85,12 @@
   <div style="margin-top:6px;">
     구매 개수: <span id="mouse-count">0</span> / 100
   </div>
-
 </div>
 
+<!-- ✅ 여기 있음 -->
 <button id="reset-btn" onclick="resetGame()">초기화</button>
 
 <script>
-  /* ===== 데이터 ===== */
   let score = Number(localStorage.getItem("score")) || 0;
   let clickPower = Number(localStorage.getItem("clickPower")) || 1;
 
@@ -105,36 +100,30 @@
   const MAX_MOUSE = 100;
   const PRICE_MULTIPLIER = 2.3;
 
-  /* ===== UI 업데이트 ===== */
   function updateUI() {
     document.getElementById("score").innerText = score;
     document.getElementById("mouse-count").innerText = mouseCount;
     document.getElementById("mouse-price").innerText = Math.floor(mousePrice);
 
     const btn = document.getElementById("mouse-upgrade");
-
-    if (score >= mousePrice && mouseCount < MAX_MOUSE) {
-      btn.className = "can-buy";
-    } else {
-      btn.className = "cant-buy";
-    }
+    btn.className =
+      score >= mousePrice && mouseCount < MAX_MOUSE
+        ? "can-buy"
+        : "cant-buy";
   }
 
-  /* ===== 클릭 ===== */
   function clickSpace() {
     score += clickPower;
     localStorage.setItem("score", score);
     updateUI();
   }
 
-  /* ===== 업그레이드 구매 ===== */
   function buyMouseUpgrade() {
     if (score < mousePrice) return;
     if (mouseCount >= MAX_MOUSE) return;
 
     score -= mousePrice;
     mouseCount++;
-
     clickPower *= 2;
     mousePrice *= PRICE_MULTIPLIER;
 
@@ -146,16 +135,14 @@
     updateUI();
   }
 
-  /* ===== 초기화 ===== */
   function resetGame() {
     if (!confirm("정말 초기화할까요?")) return;
 
+    localStorage.clear();
     score = 0;
     clickPower = 1;
     mouseCount = 0;
     mousePrice = 150;
-
-    localStorage.clear();
     updateUI();
   }
 
