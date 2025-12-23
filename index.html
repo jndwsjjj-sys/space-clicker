@@ -46,6 +46,22 @@
   .cant-buy {
     background-color: #f5c9c9;
   }
+
+  /* 초기화 버튼 */
+  #reset-btn {
+    margin-top: 15px;
+    width: 300px;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    background: #ddd;
+    font-size: 14px;
+  }
+
+  #reset-btn:hover {
+    background: #bbb;
+  }
 </style>
 </head>
 
@@ -75,6 +91,8 @@
   </div>
 
 </div>
+
+<button id="reset-btn" onclick="resetGame()">초기화</button>
 
 <script>
   /* ===== 데이터 ===== */
@@ -128,12 +146,7 @@
     updateUI();
   }
 
-  updateUI();
-</script>
-
-</body>
-</html>
-<script>
+  /* ===== 초기화 ===== */
   function resetGame() {
     if (!confirm("정말 초기화할까요?")) return;
 
@@ -145,4 +158,9 @@
     localStorage.clear();
     updateUI();
   }
+
+  updateUI();
 </script>
+
+</body>
+</html>
