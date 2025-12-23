@@ -133,3 +133,16 @@
 
 </body>
 </html>
+<script>
+  function resetGame() {
+    if (!confirm("정말 초기화할까요?")) return;
+
+    score = 0;
+    clickPower = 1;
+    mouseCount = 0;
+    mousePrice = 150;
+
+    localStorage.clear();
+    updateUI();
+  }
+</script>
